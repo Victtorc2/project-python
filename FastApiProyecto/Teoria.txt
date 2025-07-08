@@ -1,0 +1,38 @@
+Que demonios es fast api?
+
+Pues es un framework web moderno y rápido para construir apis en Python a partir de la 3.7
+Objetivo -> crear apis de alto rendmiento con el menor esfuerzo posible
+de ahí el nombre
+Este framework esta basado en anotaciones de tipo, para determinar que tipo de datos podemos retornar
+
+Es ideal para micro servicios, ya que es de alto rendimiento, asíncrono y nativo
+
+características:
+basado en estándares.
+rápido
+menos errores
+robusto
+intuitivo
+
+Usa Starllette -> framework de desarrollo web
+Pydantic-> framework de tipos
+Uvicorn -> runea el proyecto es el servidor WEB
+
+ACTIVAR ENTORNO VIRTUAL Y CREAR
+
+python -m venv venv    CREAR
+
+ venv\Scripts\activate ACTIVATR
+
+LUEGO CONTROL P PARA SELECCIONAR EL INTERPRETE DEL VENV
+
+ pip install fastapi uvicorn
+
+uvicorn main:app CORRER
+
+ pip install fastapi uvicorn
+
+
+EL MYSQL 
+
+pip install fastapi uvicorn sqlalchemy pymysql alembic pydantic // EL orm
