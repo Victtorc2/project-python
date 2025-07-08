@@ -1,18 +1,15 @@
 from fastapi import FastAPI
-from database import SessionLocal
+from app.database.connection import Base, engine
+from app.routers import categoria 
+from app.models.categoria import Categoria
 
-app = FastAPI(title="Sistema de Caja", version="1.0.0")
+# Crear tablas en la base de datos
+Base.metadata.create_all(bind=engine)
 
-@app.get("/conexion")
-def test_conexion():
-    try:
-        db = SessionLocal()
-        db.execute("SELECT 1")  # Consulta simple para probar conexión
-        return {"mensaje": "Conexión exitosa a la base de datos"}
-    except Exception as e:
-        return {"error": str(e)}
-    finally:
-        db.close()
+app = FastAPI(title="API de Categorías", version="1.0.0")
+
+# Incluir rutas
+app.include_router(categoria.router)
 
 
 
