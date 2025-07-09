@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session # Importamos la clase Session de SQLAlchemy para manejar la sesión de la base de datos
-from app.models.categoria import Categoria  # archivo renombrado
+from app.models.Categoria import Categoria  # archivo renombrado
 from app.schemas.categoria import CategoriaCreate, CategoriaUpdate
+from app.database.connection import SessionLocal
 
 
 def get_all(db: Session):  #Metodo para obtener todas las categorías de la base de datos

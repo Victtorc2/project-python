@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.database.connection import Base, engine
 from app.routers import categoria 
-from app.models.categoria import Categoria
+from app.models.Categoria import Categoria
 
 # Crear tablas en la base de datos
 Base.metadata.create_all(bind=engine)
