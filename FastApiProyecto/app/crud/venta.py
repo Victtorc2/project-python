@@ -33,7 +33,8 @@ def create(db: Session, data: VentaCreate):
         cliente=data.cliente,
         vendedor=data.vendedor,
         total=total,
-        detalles=detalles
+        detalles=detalles,
+        comentario = data.comentario
     )
 
     db.add(nueva_venta)
