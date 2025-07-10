@@ -11,6 +11,6 @@ class Producto(Base): ##heredan
     precio = Column(Float, nullable=False)
     unidad_medida = Column(String(50), nullable=False)
     stock = Column(Integer, nullable=False)
-    imagen = Column(String(255), nullable=True)
+    imagen = Column(String(500), nullable=True)
     categoria_id = Column(Integer, ForeignKey("categorias.id"), nullable=False)
     categoria = relationship("Categoria", backref="productos")

@@ -1,4 +1,6 @@
+from sqlite3 import IntegrityError
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.schemas.producto import ProductoCreate, ProductoOut, ProductoUpdate
 from app.crud import producto as crud
@@ -50,30 +52,77 @@ def obtener_producto(producto_id: int, db: Session = Depends(get_db)): ##pasale 
         imagen=producto.imagen if producto.imagen else None  # Manejo de imagen opcional
     )
 
-@router.post("/")
+@router.post("/", status_code=201)
 def crear_producto(producto_data: ProductoCreate, db: Session = Depends(get_db)):
-    crud.create(db, producto_data)
-    return {
-        "success": True,
-        "message": "Producto creado correctamente"
-    }
+    try:
+        crud.create(db, producto_data)
+        return {
+            "success": True,
+            "message": "Producto creado correctamente"
+        }
+    except Exception:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "message": "Error al crear el producto"
+            }
+        )
 
 @router.put("/{producto_id}")
 def actualizar_producto(producto_id: int, producto_data: ProductoUpdate, db: Session = Depends(get_db)):
-    actualizado = crud.update(db, producto_id, producto_data)
-    if not actualizado:
-        raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return {
-        "success": True,
-        "message": "Producto actualizado correctamente"
-    }
+    try:
+        actualizado = crud.update(db, producto_id, producto_data)
+        if not actualizado:
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "success": False,
+                    "message": "Producto no encontrado"
+                }
+            )
+        return {
+            "success": True,
+            "message": "Producto actualizado correctamente"
+        }
+    except Exception:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "message": "Error al actualizar el producto"
+            }
+        )
 
 @router.delete("/{producto_id}")
 def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
-    eliminado = crud.delete(db, producto_id)
-    if not eliminado:
-        raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return {
-        "success": True,
-        "message": "Producto eliminado correctamente"
-    }
+    try:
+        eliminado = crud.delete(db, producto_id)
+        if not eliminado:
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "success": False,
+                    "message": "Producto no encontrado"
+                }
+            )
+        return {
+            "success": True,
+            "message": "Producto eliminado correctamente"
+        }
+    except IntegrityError:
+        return JSONResponse(
+            status_code=409,
+            content={
+                "success": False,
+                "message": "No se puede eliminar el producto porque está relacionado con una venta"
+            }
+        )
+    except Exception:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "message": "Error al eliminar el producto"
+            }
+        )
