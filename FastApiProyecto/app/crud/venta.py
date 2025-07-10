@@ -13,7 +13,13 @@ def create(db: Session, data: VentaCreate):
         if not producto:
             raise ValueError(f"Producto ID {item.producto_id} no encontrado")
 
-        subtotal = item.cantidad * item.precio_unitario
+        if producto.stock < item.cantidad:
+            raise ValueError(f"Stock insuficiente para el producto '{producto.nombre}' (disponible: {producto.stock}, requerido: {item.cantidad})")
+
+        # Descontar stock
+        producto.stock -= item.cantidad
+
+        subtotal = item.cantidad * item.price_unitario
         detalle = VentaDetalle(
             producto_id=item.producto_id,
             cantidad=item.cantidad,
