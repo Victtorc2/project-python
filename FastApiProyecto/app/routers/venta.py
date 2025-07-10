@@ -13,30 +13,17 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/", response_model=VentaOut)
+@router.post("/")
 def crear_venta(data: VentaCreate, db: Session = Depends(get_db)):
     try:
-        venta = crud.create(db, data)
+        crud.create(db, data)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    return VentaOut(
-        id=venta.id,
-        cliente=venta.cliente,
-        vendedor=venta.vendedor,
-        total=venta.total,
-        fecha=venta.fecha,
-        detalles=[
-            VentaDetalleOut(
-                id=detalle.id,
-                producto_id=detalle.producto_id,
-                cantidad=detalle.cantidad,
-                precio_unitario=detalle.precio_unitario,
-                subtotal=detalle.subtotal,
-                producto_nombre=detalle.producto.nombre
-            ) for detalle in venta.detalles
-        ]
-    )
+    return {
+        "success": True,
+        "message": "Venta creada correctamente"
+    }
 
 @router.get("/", response_model=list[VentaOut])
 def listar_ventas(db: Session = Depends(get_db)):
@@ -48,6 +35,7 @@ def listar_ventas(db: Session = Depends(get_db)):
             vendedor=v.vendedor,
             total=v.total,
             fecha=v.fecha,
+            comentario = v.comentario,
             detalles=[
                 VentaDetalleOut(
                     id=d.id,
@@ -73,6 +61,7 @@ def obtener_venta(venta_id: int, db: Session = Depends(get_db)):
         vendedor=v.vendedor,
         total=v.total,
         fecha=v.fecha,
+        comentario = v.comentario,
         detalles=[
             VentaDetalleOut(
                 id=d.id,

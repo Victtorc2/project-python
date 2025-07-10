@@ -9,6 +9,7 @@ class ProductoBase(BaseModel): ##entran json aca, con este payload
     stock: int
     categoria_id: int  # Referencia a la tabla Categoria
     imagen : Optional[str] = None  # URL de la imagen del producto
+    
 class ProductoCreate(ProductoBase): ##heredan
     pass
 

@@ -5,11 +5,10 @@ from datetime import datetime
 
 class Venta(Base):
     __tablename__ = "ventas"
-
     id = Column(Integer, primary_key=True, index=True)
     cliente = Column(String(100), nullable=False)
     vendedor = Column(String(100), nullable=False)
     total = Column(Float, nullable=False)
     fecha = Column(DateTime, default=datetime.utcnow, nullable=False)
-
+    comentario = Column(String(300), nulleable = True)
     detalles = relationship("VentaDetalle", back_populates="venta", cascade="all, delete-orphan")

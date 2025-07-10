@@ -11,6 +11,5 @@ class VentaDetalle(Base):
     cantidad = Column(Integer, nullable=False)
     precio_unitario = Column(Float, nullable=False)
     subtotal = Column(Float, nullable=False)
-
     venta = relationship("Venta", back_populates="detalles")
     producto = relationship("Producto")

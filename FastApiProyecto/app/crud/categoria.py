@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Session # Importamos la clase Session de SQLAlchemy para manejar la sesión de la base de datos
-from app.models.Categoria import Categoria  # archivo renombrado
+from sqlalchemy.orm import Session
+from app.models.Categoria import Categoria  
 from app.schemas.categoria import CategoriaCreate, CategoriaUpdate
 from app.database.connection import SessionLocal
 
@@ -15,7 +15,7 @@ def create(db: Session, categoria: CategoriaCreate): #Metodo para crear una nuev
     db.add(nueva)
     db.commit() #ejecutamos la transacción para guardar los cambios en la base de datos
     db.refresh(nueva) #actualizamos la instancia de la categoría con los datos de la base de datos
-    return nueva #devolvemos la nueva categoría creada
+    return nueva
 
 def update(db: Session, categoria_id: int, datos: CategoriaUpdate):
     categoria = get_by_id(db, categoria_id)

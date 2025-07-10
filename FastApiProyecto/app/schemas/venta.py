@@ -1,8 +1,8 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 
-class VentaItem(BaseModel):
+class VentaDetalleItem(BaseModel):
     producto_id: int
     cantidad: int
     precio_unitario: float
@@ -10,9 +10,10 @@ class VentaItem(BaseModel):
 class VentaCreate(BaseModel):
     cliente: str
     vendedor: str
-    productos: List[VentaItem]
+    comentario: Optional[str] = None
+    productos: List[VentaDetalleItem]
 
-class VentaDetalleOut(VentaItem):
+class VentaDetalleOut(VentaDetalleItem):
     id: int
     producto_nombre: str
     subtotal: float
@@ -23,6 +24,7 @@ class VentaOut(BaseModel):
     vendedor: str
     total: float
     fecha: datetime
+    comentario: Optional[str] = None
     detalles: List[VentaDetalleOut]
 
     class Config:
