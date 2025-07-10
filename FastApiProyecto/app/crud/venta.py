@@ -19,11 +19,11 @@ def create(db: Session, data: VentaCreate):
         # Descontar stock
         producto.stock -= item.cantidad
 
-        subtotal = item.cantidad * item.price_unitario
+        subtotal = item.cantidad * item.precio_unitario
         detalle = VentaDetalle(
             producto_id=item.producto_id,
             cantidad=item.cantidad,
-            precio_unitario=item.price_unitario,
+            precio_unitario=item.precio_unitario,
             subtotal=subtotal
         )
         total += subtotal
