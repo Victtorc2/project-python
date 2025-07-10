@@ -26,7 +26,12 @@ def obtener_categoria(categoria_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=CategoriaOut)
 def crear_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
-    return crud.create(db, categoria)
+    crud.create(db, categoria)
+    return {
+        "success": True,
+        "message": "Categoria creada correctamente"
+    }
+
 
 @router.put("/{categoria_id}", response_model=CategoriaOut)
 def actualizar_categoria(categoria_id: int, categoria: CategoriaUpdate, db: Session = Depends(get_db)):

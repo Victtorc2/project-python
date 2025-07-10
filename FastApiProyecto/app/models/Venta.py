@@ -10,5 +10,5 @@ class Venta(Base):
     vendedor = Column(String(100), nullable=False)
     total = Column(Float, nullable=False)
     fecha = Column(DateTime, default=datetime.utcnow, nullable=False)
-    comentario = Column(String(300), nulleable = True)
+    comentario = Column(String(300), nullable = True)
     detalles = relationship("VentaDetalle", back_populates="venta", cascade="all, delete-orphan")
