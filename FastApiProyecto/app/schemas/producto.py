@@ -9,7 +9,7 @@ class ProductoBase(BaseModel): ##entran json aca, con este payload
     stock: int
     categoria_id: int  # Referencia a la tabla Categoria
     imagen : Optional[str] = None  # URL de la imagen del producto
-    
+
 class ProductoCreate(ProductoBase): ##heredan
     pass
 
@@ -21,7 +21,7 @@ class ProductoUpdate(BaseModel):
     unidad_medida: Optional[str]
     stock: Optional[int]
     categoria_id: Optional[int]
-imagen : Optional[str] = None 
+    imagen : Optional[str] = None 
 
 class ProductoOut(ProductoBase): ##devolvemos un orm de producto
     id: int
