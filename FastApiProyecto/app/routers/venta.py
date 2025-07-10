@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.database.connection import SessionLocal
 from app.schemas.venta import VentaCreate, VentaOut, VentaDetalleOut
@@ -13,17 +14,32 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/")
+@router.post("/", status_code=201)
 def crear_venta(data: VentaCreate, db: Session = Depends(get_db)):
     try:
         crud.create(db, data)
+        return {
+            "success": True,
+            "message": "Venta creada correctamente"
+        }
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "message": str(e)
+            }
+        )
+    except Exception:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": "Error interno al crear la venta"
+            }
+        )
+    
 
-    return {
-        "success": True,
-        "message": "Venta creada correctamente"
-    }
 
 @router.get("/", response_model=list[VentaOut])
 def listar_ventas(db: Session = Depends(get_db)):

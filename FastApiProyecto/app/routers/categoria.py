@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.schemas.categoria import CategoriaCreate, CategoriaUpdate, CategoriaOut
 from app.crud import categoria as crud
@@ -71,7 +72,35 @@ def actualizar_categoria(categoria_id: int, categoria: CategoriaUpdate, db: Sess
 
 @router.delete("/{categoria_id}")
 def eliminar_categoria(categoria_id: int, db: Session = Depends(get_db)):
-    eliminada = crud.delete(db, categoria_id)
-    if not eliminada:
-        raise HTTPException(status_code=404, detail="Categoría no encontrada")
-    return {"succes" : True , "message": "Categoría eliminada"}
+    try:
+        eliminada = crud.delete(db, categoria_id)
+        if not eliminada:
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "success": False,
+                    "message": "Categoría no encontrada"
+                }
+            )
+        return {
+            "success": True,
+            "message": "Categoría eliminada correctamente"
+        }
+
+    except IntegrityError:
+        return JSONResponse(
+            status_code=409,
+            content={
+                "success": False,
+                "message": "No se puede eliminar la categoría porque está asociada a uno o más productos"
+            }
+        )
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": "Error inesperado al eliminar la categoría"
+            }
+        )
