@@ -1,6 +1,10 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship ##el orm
 from app.database.connection import Base
+from sqlalchemy import Text
+
+imagen = Column(Text, nullable=True)
+
 
 class Producto(Base): ##heredan
     __tablename__ = "productos"
@@ -11,6 +15,6 @@ class Producto(Base): ##heredan
     precio = Column(Float, nullable=False)
     unidad_medida = Column(String(50), nullable=False)
     stock = Column(Integer, nullable=False)
-    imagen = Column(String(500), nullable=True)
+    imagen = Column(Text, nullable=True)
     categoria_id = Column(Integer, ForeignKey("categorias.id"), nullable=False)
     categoria = relationship("Categoria", backref="productos")

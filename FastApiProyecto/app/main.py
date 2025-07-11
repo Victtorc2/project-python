@@ -9,6 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API de Categorías", version="1.0.0")
 
+
 # === CONFIGURACIÓN DE CORS ===
 origins = [
     "http://localhost:3000",     # React local (create-react-app)
